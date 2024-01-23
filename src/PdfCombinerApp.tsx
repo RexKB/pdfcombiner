@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { PDFDocument, PDFPage } from 'pdf-lib';
 import { useDropzone } from 'react-dropzone';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+
+
+const GlobalStyle = createGlobalStyle`
+  body {
+  
+    background-color: #3498db;
+  
+`;
 
 const Container = styled.div`
   text-align: center;
   max-width: 600px;
   margin: auto;
   padding: 20px;
-  background: linear-gradient(135deg, #3498db, #8e44ad); /* Gradient background */
+  background: white; /* Gradient background */
   border-radius: 8px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased box shadow */
   display: flex;
@@ -16,7 +24,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 90vh;
-  color: #ecf0f1; /* Text color */
+  color: gray; /* Text color */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 `;
 
@@ -105,30 +113,33 @@ const PdfCombinerApp: React.FC = () => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <Container>
-      <h1 style={{ color: '#3498db' }}>PDF Combiner</h1>
-      <Dropzone {...getRootProps()}>
-        <input {...getInputProps()} />
-        <p style={{ color: '#7e8a97' }}>Drag and drop PDF files here, or click to select files</p>
-      </Dropzone>
-      {files.length > 0 && (
-        <div>
-          <h2 style={{ color: '#3498db' }}>Selected Files:</h2>
-          <FileList>
-            {files.map((file, index) => (
-              <FileItem key={index}>{file.name}</FileItem>
-            ))}
-          </FileList>
-          <Button onClick={mergePDFs}>Merge Files</Button>
-        </div>
-      )}
-      {mergedPdf && (
-        <div>
-          <h2 style={{ color: '#3498db' }}>Download Merged PDF</h2>
-          <DownloadButton onClick={handleDownload}>Download</DownloadButton>
-        </div>
-      )}
-    </Container>
+    <>
+      <GlobalStyle />
+      <Container>
+        <h1 style={{ color: '#3498db' }}>PDF Combiner</h1>
+        <Dropzone {...getRootProps()}>
+          <input {...getInputProps()} />
+          <p style={{ color: '#7e8a97' }}>Drag and drop PDF files here, or click to select files</p>
+        </Dropzone>
+        {files.length > 0 && (
+          <div>
+            <h2 style={{ color: '#3498db' }}>Selected Files:</h2>
+            <FileList>
+              {files.map((file, index) => (
+                <FileItem key={index}>{file.name}</FileItem>
+              ))}
+            </FileList>
+            <Button onClick={mergePDFs}>Merge Files</Button>
+          </div>
+        )}
+        {mergedPdf && (
+          <div>
+            <h2 style={{ color: '#3498db' }}>Download Merged PDF</h2>
+            <DownloadButton onClick={handleDownload}>Download</DownloadButton>
+          </div>
+        )}
+      </Container>
+    </>
   );
 };
 
